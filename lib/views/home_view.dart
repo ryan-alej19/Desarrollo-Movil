@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:switch_theme/services/services/theme_service.dart';
-import 'package:switch_theme/services/views/colors_view.dart';
+import 'package:switch_theme/services/theme_service.dart';
+import 'package:switch_theme/views/colors_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
