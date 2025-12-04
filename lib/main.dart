@@ -32,8 +32,18 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             title: 'Switch Theme',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            // ⬇️ ACTUALIZADO: usar color dinámico
+            theme: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: themeService.primaryColor,
+              ),
+            ),
+            darkTheme: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: themeService.primaryColor,
+                brightness: Brightness.dark,
+              ),
+            ),
             themeMode: themeService.isDarkMode
                 ? ThemeMode.dark
                 : ThemeMode.light,
