@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ThemeService extends ChangeNotifier {
-  bool _isDarkMode = false;
-  Color _primaryColor = Colors.blue; // ⬅️ NUEVO: color del tema
+  Color _selectedColor = Colors.blue; // Color por defecto
 
-  bool get isDarkMode => _isDarkMode;
-  Color get primaryColor => _primaryColor; // ⬅️ NUEVO
+  Color get selectedColor => _selectedColor;
 
-  void toggleTheme() {
-    _isDarkMode = !_isDarkMode;
-    notifyListeners();
+  void setColor(Color color) {
+    _selectedColor = color;
+    notifyListeners(); // ⬅️ Notifica a todos los listeners que cambió
   }
 
-  // ⬅️ NUEVO: método para cambiar el color del tema
-  void changeColor(Color newColor) {
-    _primaryColor = newColor;
-    notifyListeners();
+  ThemeData getTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: _selectedColor, // ⬅️ Usa el color guardado
+      ),
+    );
   }
 }

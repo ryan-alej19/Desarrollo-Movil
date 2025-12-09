@@ -15,42 +15,54 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late ThemeService _themeService;
-
-  @override
-  void initState() {
-    super.initState();
-    _themeService = ThemeService();
-  }
+  bool _isDarkMode = false;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ThemeService>.value(
-      value: _themeService,
+    return ChangeNotifierProvider(
+      create: (context) => ThemeService(),
       child: Consumer<ThemeService>(
-        builder: (context, themeService, _) {
+        builder: (context, themeService, child) {
           return MaterialApp(
             title: 'Switch Theme',
-            debugShowCheckedModeBanner: false,
-            // ⬇️ ACTUALIZADO: usar color dinámico
-            theme: ThemeData.light().copyWith(
+            theme: themeService.getTheme(),
+            darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
               colorScheme: ColorScheme.fromSeed(
-                seedColor: themeService.primaryColor,
-              ),
-            ),
-            darkTheme: ThemeData.dark().copyWith(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: themeService.primaryColor,
+                seedColor: themeService.selectedColor,
                 brightness: Brightness.dark,
               ),
             ),
-            themeMode: themeService.isDarkMode
-                ? ThemeMode.dark
-                : ThemeMode.light,
-            home: const HomeView(),
+            themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            home: MyHomePage(
+              onToggleDarkMode: () {
+                setState(() {
+                  _isDarkMode = !_isDarkMode;
+                });
+              },
+              isDarkMode: _isDarkMode,
+            ),
           );
         },
       ),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  final VoidCallback onToggleDarkMode;
+  final bool isDarkMode;
+
+  const MyHomePage({
+    super.key,
+    required this.onToggleDarkMode,
+    required this.isDarkMode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return HomeView(
+      onToggleDarkMode: onToggleDarkMode,
+      isDarkMode: isDarkMode,
     );
   }
 }

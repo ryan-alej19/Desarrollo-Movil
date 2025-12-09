@@ -8,133 +8,268 @@ class InputsView extends StatefulWidget {
 }
 
 class _InputsViewState extends State<InputsView> {
-  bool checkValue = false;
-  bool switchValue = false;
-  double sliderValue = 0.5;
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _marcaController = TextEditingController();
+
+  String _categoria = 'Camisa';
+  String _talla = 'M';
+
+  bool _colorRojo = false;
+  bool _colorAzul = false;
+  bool _colorNegro = false;
+  bool _colorBlanco = false;
+
+  double _precio = 50.0;
+  bool _enStock = true; // ⬅️ EL 7º ATRIBUTO
+
+  @override
+  void dispose() {
+    _nombreController.dispose();
+    _marcaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Inputs View'),
+        title: const Text('Registro de Ropa'),
       ),
-      body: SingleChildScrollView(  // ⬅️ Para hacer scroll
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // TextField
+            // NOMBRE DEL PRODUCTO
             TextField(
-              decoration: InputDecoration(
-                labelText: 'Name',
+              controller: _nombreController,
+              decoration: const InputDecoration(
+                labelText: 'Nombre del Producto',
                 border: OutlineInputBorder(),
-                helperText: "It's necessary your full name",
+                hintText: 'Ej: Camiseta Nike',
               ),
             ),
-            
-            const SizedBox(height: 30),
-            
-            // Checkbox
-            Row(
-              children: [
-                Checkbox(
-                  value: checkValue,
-                  onChanged: (value) {
-                    setState(() {
-                      checkValue = value!;
-                    });
-                  },
-                ),
-                const Text('Check me'),
-              ],
-            ),
-            
             const SizedBox(height: 20),
-            
-            // Switch
-            Row(
-              children: [
-                Switch(
-                  value: switchValue,
-                  onChanged: (value) {
-                    setState(() {
-                      switchValue = value;
-                    });
-                  },
-                ),
-                const Text('Switch me'),
-              ],
+
+            // MARCA
+            TextField(
+              controller: _marcaController,
+              decoration: const InputDecoration(
+                labelText: 'Marca',
+                border: OutlineInputBorder(),
+                hintText: 'Ej: Nike, Adidas',
+              ),
             ),
-            
-            const SizedBox(height: 30),
-            
-            // Slider
+            const SizedBox(height: 20),
+
+            // CATEGORÍA
+            const Text('Categoría',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButton<String>(
+              value: _categoria,
+              isExpanded: true,
+              items: const [
+                DropdownMenuItem(value: 'Camisa', child: Text('Camisa')),
+                DropdownMenuItem(value: 'Pantalón', child: Text('Pantalón')),
+                DropdownMenuItem(value: 'Zapatos', child: Text('Zapatos')),
+                DropdownMenuItem(value: 'Chaqueta', child: Text('Chaqueta')),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _categoria = value!;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+
+            // TALLA
+            const Text('Talla',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Slider'),
-                Slider(
-                  value: sliderValue,
-                  min: 0.0,
-                  max: 1.0,
+                RadioListTile<String>(
+                  title: const Text('XS'),
+                  value: 'XS',
+                  groupValue: _talla,
                   onChanged: (value) {
                     setState(() {
-                      sliderValue = value;
+                      _talla = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('S'),
+                  value: 'S',
+                  groupValue: _talla,
+                  onChanged: (value) {
+                    setState(() {
+                      _talla = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('M'),
+                  value: 'M',
+                  groupValue: _talla,
+                  onChanged: (value) {
+                    setState(() {
+                      _talla = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('L'),
+                  value: 'L',
+                  groupValue: _talla,
+                  onChanged: (value) {
+                    setState(() {
+                      _talla = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('XL'),
+                  value: 'XL',
+                  // ignore: deprecated_member_use
+                  groupValue: _talla,
+                  // ignore: deprecated_member_use
+                  onChanged: (value) {
+                    setState(() {
+                      _talla = value!;
                     });
                   },
                 ),
               ],
             ),
-            
-            const SizedBox(height: 40),
-            
-            // ⬇️ NUEVOS BOTONES
+            const SizedBox(height: 20),
+
+            // COLORES
+            const Text('Colores',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            CheckboxListTile(
+              title: const Text('Rojo'),
+              value: _colorRojo,
+              onChanged: (value) {
+                setState(() {
+                  _colorRojo = value!;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('Azul'),
+              value: _colorAzul,
+              onChanged: (value) {
+                setState(() {
+                  _colorAzul = value!;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('Negro'),
+              value: _colorNegro,
+              onChanged: (value) {
+                setState(() {
+                  _colorNegro = value!;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('Blanco'),
+              value: _colorBlanco,
+              onChanged: (value) {
+                setState(() {
+                  _colorBlanco = value!;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+
+            // PRECIO
+            const Text('Precio (USD)',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Slider(
+              value: _precio,
+              min: 10.0,
+              max: 500.0,
+              divisions: 49,
+              label: '\$${_precio.round()}',
+              onChanged: (value) {
+                setState(() {
+                  _precio = value;
+                });
+              },
+            ),
+            Text('Precio: \$${_precio.round()}'),
+            const SizedBox(height: 20),
+
+            // EN STOCK en switch
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('¿Producto en Stock?',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Switch(
+                  value: _enStock,
+                  onChanged: (value) {
+                    setState(() {
+                      _enStock = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+
+            // BOTÓN GUARDAR
             Center(
-              child: Column(
-                children: [
-                  // 1. Elevated Button
-                  ElevatedButton(
-                    onPressed: () {
-                      print('Elevated Button pressed');
-                    },
-                    child: const Text('Elevated Button'),
-                  ),
-                  
-                  const SizedBox(height: 12),
-                  
-                  // 2. Filled Button
-                  FilledButton(
-                    onPressed: () {
-                      print('Filled Button pressed');
-                    },
-                    child: const Text('Filled Button'),
-                  ),
-                  
-                  const SizedBox(height: 12),
-                  
-                  // 3. Text Button
-                  TextButton(
-                    onPressed: () {
-                      print('Text Button pressed');
-                    },
-                    child: const Text('Text Button'),
-                  ),
-                  
-                  const SizedBox(height: 12),
-                  
-                  // 4. Outline Button
-                  OutlinedButton(
-                    onPressed: () {
-                      print('Outline Button pressed');
-                    },
-                    child: const Text('Outline Button'),
-                  ),
-                ],
+              child: ElevatedButton(
+                onPressed: _guardarFormulario,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                ),
+                child: const Text('GUARDAR PRODUCTO',
+                    style: TextStyle(fontSize: 16)),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _guardarFormulario() {
+    List<String> coloresSeleccionados = [];
+    if (_colorRojo) coloresSeleccionados.add('Rojo');
+    if (_colorAzul) coloresSeleccionados.add('Azul');
+    if (_colorNegro) coloresSeleccionados.add('Negro');
+    if (_colorBlanco) coloresSeleccionados.add('Blanco');
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Producto Guardado ✓'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Nombre: ${_nombreController.text}'),
+            Text('Marca: ${_marcaController.text}'),
+            Text('Categoría: $_categoria'),
+            Text('Talla: $_talla'),
+            Text(
+                'Colores: ${coloresSeleccionados.isEmpty ? "Ninguno" : coloresSeleccionados.join(", ")}'),
+            Text('Precio: \$${_precio.round()}'),
+            Text('En Stock: ${_enStock ? "Sí ✅" : "No ❌"}'), // ⬅ ahi aparece 
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }

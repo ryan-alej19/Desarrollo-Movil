@@ -7,68 +7,57 @@ class ColorsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> colors = [
-      Colors.red,
-      Colors.blue,
-      Colors.green,
-      Colors.yellow,
-      Colors.orange,
-      Colors.purple,
-      Colors.pink,
-      Colors.teal,
-    ];
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Colors View')),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-        ),
-        padding: const EdgeInsets.all(16),
-        itemCount: colors.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              // ⬇️ AL TOCAR UN COLOR, CAMBIA EL TEMA ENTERO
-              context.read<ThemeService>().changeColor(colors[index]);
-
-              // Opcional: mostrar mensaje
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Theme changed to ${_getColorName(colors[index])}',
-                  ),
-                  duration: const Duration(seconds: 1),
-                ),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: colors[index],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.outline,
-                  width: 2,
-                ),
+      appBar: AppBar(
+        title: const Text('Selecciona un Tema'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Elige un color para el tema:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView(
+                children: [
+                  _colorButton(context, Colors.blue, 'Azul'),
+                  _colorButton(context, Colors.green, 'Verde'),
+                  _colorButton(context, Colors.red, 'Rojo'),
+                  _colorButton(context, Colors.purple, 'Morado'),
+                  _colorButton(context, Colors.orange, 'Naranja'),
+                  _colorButton(context, Colors.teal, 'Verde Oscuro'),
+                ],
               ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
 
-  String _getColorName(Color color) {
-    if (color == Colors.red) return 'Red';
-    if (color == Colors.blue) return 'Blue';
-    if (color == Colors.green) return 'Green';
-    if (color == Colors.yellow) return 'Yellow';
-    if (color == Colors.orange) return 'Orange';
-    if (color == Colors.purple) return 'Purple';
-    if (color == Colors.pink) return 'Pink';
-    if (color == Colors.teal) return 'Teal';
-    return 'Unknown';
+  Widget _colorButton(BuildContext context, Color color, String nombre) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: ElevatedButton(
+        onPressed: () {
+          Provider.of<ThemeService>(context, listen: false).setColor(color);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Tema cambiado a $nombre')),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          padding: const EdgeInsets.symmetric(vertical: 20),
+        ),
+        child: Text(
+          nombre,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+      ),
+    );
   }
 }

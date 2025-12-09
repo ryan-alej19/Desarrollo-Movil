@@ -1,105 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:switch_theme/services/theme_service.dart';
 import 'package:switch_theme/views/colors_view.dart';
-import 'package:switch_theme/views/inputs_view.dart'; // ⬅️ AGREGAR ESTE IMPORT
+import 'package:switch_theme/views/inputs_view.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  final VoidCallback onToggleDarkMode;
+  final bool isDarkMode;
+
+  const HomeView({
+    super.key,
+    required this.onToggleDarkMode,
+    required this.isDarkMode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Switch Theme')),
+      appBar: AppBar(
+        title: const Text('Switch Theme'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Switch Theme',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
-
-            // Botón para Colors View
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const ColorsView()),
+                  MaterialPageRoute(builder: (context) => const ColorsView()),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               ),
-              child: const Text(
-                'Go to colors view',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: const Text('Go to colors view', style: TextStyle(fontSize: 16)),
             ),
-
-            const SizedBox(height: 20), // ⬅️ Espaciado
-            // ⬇️ NUEVO: Botón para Inputs View
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const InputsView()),
+                  MaterialPageRoute(builder: (context) => const InputsView()),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               ),
-              child: const Text(
-                'Go to inputs view',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: const Text('Go to inputs view', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: context.watch<ThemeService>().isDarkMode
-            ? Colors.white
-            : Colors.black,
-        foregroundColor: context.watch<ThemeService>().isDarkMode
-            ? Colors.black
-            : Colors.white,
-        onPressed: () {
-          context.read<ThemeService>().toggleTheme();
-        },
-        tooltip: context.watch<ThemeService>().isDarkMode
-            ? 'Switch to light mode'
-            : 'Switch to dark mode',
-        child: Icon(
-          context.watch<ThemeService>().isDarkMode
-              ? Icons.wb_sunny
-              : Icons.nights_stay,
-        ),
+        onPressed: onToggleDarkMode,
+        tooltip: isDarkMode ? 'Modo claro' : 'Modo oscuro',
+        child: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
       ),
     );
   }
