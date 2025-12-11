@@ -261,7 +261,7 @@ class _InputsViewState extends State<InputsView> {
             Text(
                 'Colores: ${coloresSeleccionados.isEmpty ? "Ninguno" : coloresSeleccionados.join(", ")}'),
             Text('Precio: \$${_precio.round()}'),
-            Text('En Stock: ${_enStock ? "Sí ✅" : "No ❌"}'), // ⬅ ahi aparece 
+            Text('En Stock: ${_enStock ? "Sí ✅" : "No ❌"}'), //  
           ],
         ),
         actions: [

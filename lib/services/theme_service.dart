@@ -7,14 +7,14 @@ class ThemeService extends ChangeNotifier {
 
   void setColor(Color color) {
     _selectedColor = color;
-    notifyListeners(); // ⬅️ Notifica a todos los listeners que cambió
+    notifyListeners(); // Notifica a todos los listeners que cambió
   }
 
   ThemeData getTheme() {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: _selectedColor, // ⬅️ Usa el color guardado
+        seedColor: _selectedColor, // Usa el color guardado
       ),
     );
   }
