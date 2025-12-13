@@ -32,6 +32,8 @@ class _HttpViewState extends State<HttpView> {
         // PRINT EN DEBUG CONSOLE
         try {
           print('Simpson API Character: ${character.name}');
+          print('Character ID: ${character.id}');
+          print('Portrait Path: ${character.portraitPath}');
         } catch (_) {
           print('Simpson API Character: <sin nombre>');
         }
@@ -164,7 +166,7 @@ class _HttpViewState extends State<HttpView> {
                             Icon(Icons.error, color: Colors.red[700], size: 40),
                             const SizedBox(height: 10),
                             Text(
-                              'Error Respuesta inesperada de la API',
+                              'Error: ${snapshot.error}',
                               style: TextStyle(
                                 color: Colors.red[700],
                                 fontSize: 14,
@@ -291,9 +293,8 @@ class _HttpViewState extends State<HttpView> {
                         ),
                         const SizedBox(height: 20),
 
-                        // CARD 3: IMAGEN (usa portraitPath)
-                        if (character.portraitPath != null &&
-                            character.portraitPath!.isNotEmpty)
+                        // CARD 3: IMAGEN CON MEJOR MANEJO DE ERRORES
+                        if (character.id != null)
                           Card(
                             elevation: 5,
                             shape: RoundedRectangleBorder(
@@ -305,30 +306,7 @@ class _HttpViewState extends State<HttpView> {
                                 'https://thesimpsonsapi.com/api/characters/${character.id}/portrait.webp',
                                 height: 350,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    height: 350,
-                                    color: Colors.grey[300],
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.image_not_supported,
-                                          size: 50,
-                                          color: Colors.grey,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        const Text(
-                                          'Imagen no disponible',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
+                                loadingBuilder: (context, child, loadingProgress) {\n                                  if (loadingProgress == null) {\n                                    return child;\n                                  }\n                                  return Container(\n                                    height: 350,\n                                    color: Colors.grey[200],\n                                    child: Column(\n                                      mainAxisAlignment: MainAxisAlignment.center,\n                                      children: [\n                                        CircularProgressIndicator(\n                                          valueColor: AlwaysStoppedAnimation<Color>(\n                                            Colors.teal[600]!,\n                                          ),\n                                        ),\n                                        const SizedBox(height: 10),\n                                        const Text('Cargando imagen...'),\n                                      ],\n                                    ),\n                                  );\n                                },\n                                errorBuilder: (context, error, stackTrace) {\n                                  return Container(\n                                    height: 350,\n                                    color: Colors.grey[300],\n                                    child: Column(\n                                      mainAxisAlignment:\n                                          MainAxisAlignment.center,\n                                      children: [\n                                        Icon(\n                                          Icons.image_not_supported,\n                                          size: 50,\n                                          color: Colors.grey,\n                                        ),\n                                        const SizedBox(height: 10),\n                                        const Text(\n                                          'Imagen no disponible',\n                                          style: TextStyle(color: Colors.grey),\n                                        ),\n                                      ],\n                                    ),\n                                  );\n                                },\n                              ),\n                            ),
                           ),
                         const SizedBox(height: 30),
                       ],
