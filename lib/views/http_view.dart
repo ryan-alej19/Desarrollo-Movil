@@ -27,16 +27,32 @@ class _HttpViewState extends State<HttpView> {
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
+        
+        // DEBUG: Imprimir el JSON completo
+        print('===== API RESPONSE =====');
+        print('Raw JSON: $jsonData');
+        print('JSON Type: ${jsonData.runtimeType}');
+        if (jsonData is List) {
+          print('Lista con ${jsonData.length} elementos');
+          if (jsonData.isNotEmpty) {
+            print('Primer elemento: ${jsonData[0]}');
+          }
+        } else if (jsonData is Map) {
+          print('Map Keys: ${jsonData.keys}');
+          print('ID: ${jsonData['id']}');
+          print('Name: ${jsonData['name']}');
+        }
+        print('========================');
+        
         final character = CharacterModel.fromJson(jsonData);
 
         // PRINT EN DEBUG CONSOLE
-        try {
-          print('Simpson API Character: ${character.name}');
-          print('Character ID: ${character.id}');
-          print('Portrait Path: ${character.portraitPath}');
-        } catch (_) {
-          print('Simpson API Character: <sin nombre>');
-        }
+        print('\n===== PARSED CHARACTER =====');
+        print('Character Name: ${character.name}');
+        print('Character ID: ${character.id}');
+        print('Portrait Path: ${character.portraitPath}');
+        print('Image URL: https://thesimpsonsapi.com/api/characters/${character.id}/portrait.webp');
+        print('==============================\n');
 
         return character;
       } else {
@@ -81,7 +97,7 @@ class _HttpViewState extends State<HttpView> {
                   Icon(Icons.person, size: 40, color: Colors.teal[600]),
                   const SizedBox(height: 10),
                   const Text(
-                    '📺 Simpsons API',
+                    '📋 Simpsons API',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -306,7 +322,52 @@ class _HttpViewState extends State<HttpView> {
                                 'https://thesimpsonsapi.com/api/characters/${character.id}/portrait.webp',
                                 height: 350,
                                 fit: BoxFit.cover,
-                                loadingBuilder: (context, child, loadingProgress) {\n                                  if (loadingProgress == null) {\n                                    return child;\n                                  }\n                                  return Container(\n                                    height: 350,\n                                    color: Colors.grey[200],\n                                    child: Column(\n                                      mainAxisAlignment: MainAxisAlignment.center,\n                                      children: [\n                                        CircularProgressIndicator(\n                                          valueColor: AlwaysStoppedAnimation<Color>(\n                                            Colors.teal[600]!,\n                                          ),\n                                        ),\n                                        const SizedBox(height: 10),\n                                        const Text('Cargando imagen...'),\n                                      ],\n                                    ),\n                                  );\n                                },\n                                errorBuilder: (context, error, stackTrace) {\n                                  return Container(\n                                    height: 350,\n                                    color: Colors.grey[300],\n                                    child: Column(\n                                      mainAxisAlignment:\n                                          MainAxisAlignment.center,\n                                      children: [\n                                        Icon(\n                                          Icons.image_not_supported,\n                                          size: 50,\n                                          color: Colors.grey,\n                                        ),\n                                        const SizedBox(height: 10),\n                                        const Text(\n                                          'Imagen no disponible',\n                                          style: TextStyle(color: Colors.grey),\n                                        ),\n                                      ],\n                                    ),\n                                  );\n                                },\n                              ),\n                            ),
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return Container(
+                                    height: 350,
+                                    color: Colors.grey[200],
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.teal[600]!,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        const Text('Cargando imagen...'),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Error cargando imagen: $error');
+                                  return Container(
+                                    height: 350,
+                                    color: Colors.grey[300],
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.image_not_supported,
+                                          size: 50,
+                                          color: Colors.grey,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        const Text(
+                                          'Imagen no disponible',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         const SizedBox(height: 30),
                       ],
