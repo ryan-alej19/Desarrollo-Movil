@@ -15,11 +15,9 @@ class _HttpViewState extends State<HttpView> {
 
   Future<CharacterModel> _fetchSimpsonsCharacter() async {
     try {
-      // Generar número aleatorio entre 1 y 900 (hay ~900 personajes)
-      final random = (DateTime.now().millisecondsSinceEpoch % 900) + 1;
-
+      // Usar la API CORRECTA de Simpsons que devuelve personajes válidos
       final response = await http
-          .get(Uri.parse('https://thesimpsonsapi.com/api/characters/$random'))
+          .get(Uri.parse('https://thesimpsonsapi.com/api/characters'))
           .timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw 'Timeout: La solicitud tardó demasiado',
@@ -30,31 +28,21 @@ class _HttpViewState extends State<HttpView> {
         
         // DEBUG: Imprimir el JSON completo
         print('===== API RESPONSE =====');
-        print('Raw JSON: $jsonData');
-        print('JSON Type: ${jsonData.runtimeType}');
+        print('Response Type: ${jsonData.runtimeType}');
         if (jsonData is List) {
-          print('Lista con ${jsonData.length} elementos');
+          print('Total personajes: ${jsonData.length}');
           if (jsonData.isNotEmpty) {
-            print('Primer elemento: ${jsonData[0]}');
+            print('Primer personaje: ${jsonData[0]}');
+            // Seleccionar un personaje aleatorio
+            final random = (DateTime.now().millisecondsSinceEpoch % jsonData.length).toInt();
+            final selectedCharacter = jsonData[random];
+            print('Personaje seleccionado (índice $random): $selectedCharacter');
+            print('========================');
+            return CharacterModel.fromJson(selectedCharacter);
           }
-        } else if (jsonData is Map) {
-          print('Map Keys: ${jsonData.keys}');
-          print('ID: ${jsonData['id']}');
-          print('Name: ${jsonData['name']}');
         }
         print('========================');
-        
-        final character = CharacterModel.fromJson(jsonData);
-
-        // PRINT EN DEBUG CONSOLE
-        print('\n===== PARSED CHARACTER =====');
-        print('Character Name: ${character.name}');
-        print('Character ID: ${character.id}');
-        print('Portrait Path: ${character.portraitPath}');
-        print('Image URL: https://thesimpsonsapi.com/api/characters/${character.id}/portrait.webp');
-        print('==============================\n');
-
-        return character;
+        throw 'No hay personajes disponibles';
       } else {
         throw 'Error ${response.statusCode}: No se pudo obtener los datos';
       }
@@ -97,7 +85,7 @@ class _HttpViewState extends State<HttpView> {
                   Icon(Icons.person, size: 40, color: Colors.teal[600]),
                   const SizedBox(height: 10),
                   const Text(
-                    '📋 Simpsons API',
+                    '📺 Simpsons API',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -310,7 +298,7 @@ class _HttpViewState extends State<HttpView> {
                         const SizedBox(height: 20),
 
                         // CARD 3: IMAGEN CON MEJOR MANEJO DE ERRORES
-                        if (character.id != null)
+                        if (character.portraitPath != null && character.portraitPath!.isNotEmpty)
                           Card(
                             elevation: 5,
                             shape: RoundedRectangleBorder(
@@ -319,7 +307,7 @@ class _HttpViewState extends State<HttpView> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
-                                'https://thesimpsonsapi.com/api/characters/${character.id}/portrait.webp',
+                                character.portraitPath!,
                                 height: 350,
                                 fit: BoxFit.cover,
                                 loadingBuilder: (context, child, loadingProgress) {
@@ -366,6 +354,38 @@ class _HttpViewState extends State<HttpView> {
                                     ),
                                   );
                                 },
+                              ),
+                            ),
+                          )
+                        else
+                          Card(
+                            elevation: 5,
+                            color: Colors.grey[300],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Container(
+                              height: 350,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.image_not_supported,
+                                    size: 50,
+                                    color: Colors.grey[600],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Imagen no disponible para este personaje',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
