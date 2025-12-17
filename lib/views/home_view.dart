@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:switch_theme/views/colors_view.dart';
 import 'package:switch_theme/views/inputs_view.dart';
-import 'package:switch_theme/views/http_view.dart';
+import 'simpsonsview.dart';
 
 class HomeView extends StatelessWidget {
   final VoidCallback onToggleDarkMode;
@@ -106,12 +106,12 @@ class HomeView extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // BOTÓN 3: IR A HTTP VIEW
+              // BOTÓN 3: IR A SIMPSONS VIEW
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HttpView()),
+                    MaterialPageRoute(builder: (context) => const SimpsonsView()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
