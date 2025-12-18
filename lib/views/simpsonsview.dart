@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:math';
 
 class SimpsonsView extends StatefulWidget {
-  const SimpsonsView({Key? key}) : super(key: key);
+  const SimpsonsView({super.key});
 
   @override
   State<SimpsonsView> createState() => _SimpsonsViewState();
@@ -59,12 +59,18 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                   children: const [
                     Icon(Icons.tv, size: 40, color: Colors.amber),
                     SizedBox(height: 8),
-                    Text('📺 Simpsons API',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(
+                      '📺 Simpsons API',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: 6),
-                    const Text('Obtén personajes aleatorios con imágenes',
-                        style: TextStyle(color: Colors.black54)),
+                    Text(
+                      'Obtén personajes aleatorios con imágenes',
+                      style: TextStyle(color: Colors.black54),
+                    ),
                   ],
                 ),
               ),
@@ -77,13 +83,17 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                 });
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Obtener Personaje Aleatorio',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              label: const Text(
+                'Obtener Personaje Aleatorio',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.amber[700],
                 foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 26, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 26,
+                  vertical: 14,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -100,12 +110,15 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                       children: [
                         CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.amber[700]!),
+                            Colors.amber[700]!,
+                          ),
                           strokeWidth: 4,
                         ),
                         const SizedBox(height: 12),
-                        const Text('Cargando personaje...',
-                            style: TextStyle(fontSize: 16)),
+                        const Text(
+                          'Cargando personaje...',
+                          style: TextStyle(fontSize: 16),
+                        ),
                         const SizedBox(height: 20),
                       ],
                     );
@@ -126,11 +139,13 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                           children: [
                             Icon(Icons.error, size: 36, color: Colors.red[700]),
                             const SizedBox(height: 8),
-                            Text(msg,
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                  fontWeight: FontWeight.bold,
-                                )),
+                            Text(
+                              msg,
+                              style: TextStyle(
+                                color: Colors.red[700],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -140,11 +155,12 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                   if (snapshot.hasData) {
                     final c = snapshot.data!;
                     final name = (c['name'] ?? 'Desconocido').toString();
-                    final description = (c['description'] ?? c['about'] ?? '').toString();
+                    final description = (c['description'] ?? c['about'] ?? '')
+                        .toString();
                     String imageUrl = '';
                     final portraitPath = (c['portrait_path'] ?? '').toString();
                     if (portraitPath.isNotEmpty) {
-                      imageUrl = 'https://thesimpsonsapi.com' + portraitPath;
+                      imageUrl = 'https://thesimpsonsapi.com$portraitPath';
                     } else if (c['image'] != null) {
                       imageUrl = (c['image'] ?? '').toString();
                     }
@@ -166,23 +182,35 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                const Icon(Icons.person,
-                                    color: Colors.amber, size: 28),
+                                const Icon(
+                                  Icons.person,
+                                  color: Colors.amber,
+                                  size: 28,
+                                ),
                                 const SizedBox(height: 8),
-                                const Text('Personaje:',
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                const Text(
+                                  'Personaje:',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 const SizedBox(height: 6),
-                                Text(name,
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                  name,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 const SizedBox(height: 8),
                                 if (description.isNotEmpty)
-                                  Text(description,
-                                      style: const TextStyle(color: Colors.black54))
+                                  Text(
+                                    description,
+                                    style: const TextStyle(
+                                      color: Colors.black54,
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -211,15 +239,22 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                         height: 320,
                                         color: Colors.grey[200],
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             CircularProgressIndicator(
-                                              valueColor: AlwaysStoppedAnimation<Color>(
-                                                  Colors.amber[700]!),
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                    Colors.amber[700]!,
+                                                  ),
                                             ),
                                             const SizedBox(height: 12),
-                                            const Text('Cargando imagen...',
-                                                style: TextStyle(color: Colors.grey))
+                                            const Text(
+                                              'Cargando imagen...',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       );
@@ -230,11 +265,22 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                         color: Colors.grey[300],
                                         alignment: Alignment.center,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: const [
-                                            Icon(Icons.broken_image, size: 64, color: Colors.grey),
+                                            Icon(
+                                              Icons.broken_image,
+                                              size: 64,
+                                              color: Colors.grey,
+                                            ),
                                             SizedBox(height: 10),
-                                            Text('Imagen no disponible', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                                            Text(
+                                              'Imagen no disponible',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       );
@@ -245,11 +291,19 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                     color: Colors.grey[200],
                                     alignment: Alignment.center,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: const [
-                                        Icon(Icons.person_outline, size: 88, color: Colors.grey),
+                                        Icon(
+                                          Icons.person_outline,
+                                          size: 88,
+                                          color: Colors.grey,
+                                        ),
                                         SizedBox(height: 8),
-                                        Text('No hay retrato disponible', style: TextStyle(color: Colors.grey)),
+                                        Text(
+                                          'No hay retrato disponible',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
                                       ],
                                     ),
                                   ),

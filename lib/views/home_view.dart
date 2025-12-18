@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:switch_theme/views/colors_view.dart';
 import 'package:switch_theme/views/inputs_view.dart';
-import 'simpsonsview.dart';
+import 'package:switch_theme/views/http_view.dart';
+import 'package:switch_theme/views/episodios_list_view.dart';
 
 class HomeView extends StatelessWidget {
   final VoidCallback onToggleDarkMode;
@@ -23,7 +24,7 @@ class HomeView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // 🐱 ANIMACIÓN LOTTIE DEL GATO
+              // animacion de lottie
               SizedBox(
                 height: 250,
                 width: 250,
@@ -106,12 +107,12 @@ class HomeView extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // BOTÓN 3: IR A SIMPSONS VIEW
+              // BOTÓN 3: IR A HTTP VIEW
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SimpsonsView()),
+                    MaterialPageRoute(builder: (context) => const HttpView()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -125,6 +126,33 @@ class HomeView extends StatelessWidget {
                 ),
                 child: const Text(
                   'Go to HTTP View',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // BOTÓN 4: IR A EPISODIOS
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EpisodiosListView(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 15,
+                  ),
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  elevation: 5,
+                ),
+                child: const Text(
+                  'Go to Episodes View',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
