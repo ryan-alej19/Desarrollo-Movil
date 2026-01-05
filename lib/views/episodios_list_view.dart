@@ -82,14 +82,15 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
     }
   }
 
-  // 🔴 FUNCIÓN PARA CONSTRUIR URL CORRECTA
+  // ✅ FUNCIÓN CORREGIDA - USA CDN CORRECTO
   String _buildEpisodeImageUrl(String imagePath) {
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
 
-    String url = 'https://thesimpsonsapi.com$imagePath';
-    print('🎯 URL Episodio: $url');
+    // ✅ Usar el CDN correcto con tamaño 500
+    String url = 'https://cdn.thesimpsonsapi.com/500$imagePath';
+    print('🎯 URL Episodio CDN: $url');
     return url;
   }
 
@@ -272,14 +273,19 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
                               child: Image.network(
                                 _buildEpisodeImageUrl(imagePath),
                                 height: 150,
+                                width: double.infinity,
                                 fit: BoxFit.cover,
                                 loadingBuilder: (context, child, progress) {
                                   if (progress == null) return child;
                                   return Container(
                                     height: 150,
                                     color: Colors.grey[200],
-                                    child: const Center(
-                                      child: CircularProgressIndicator(),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                          Colors.blue[700]!,
+                                        ),
+                                      ),
                                     ),
                                   );
                                 },
@@ -294,6 +300,7 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
                                       child: Icon(
                                         Icons.image_not_supported,
                                         color: Colors.grey,
+                                        size: 40,
                                       ),
                                     ),
                                   );

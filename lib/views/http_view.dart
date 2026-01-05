@@ -82,7 +82,7 @@ class _HttpViewState extends State<HttpView> {
         print('=== PERSONAJE ENCONTRADO ===');
         print('ID: ${character.id}');
         print('Nombre: ${character.name}');
-        print('Portrait Path: ${character.portraitPath}');
+        print('Portrait Path (API): ${character.portraitPath}');
         print('==========================');
 
         setState(() {
@@ -113,16 +113,26 @@ class _HttpViewState extends State<HttpView> {
     }
   }
 
-  // 🔴 FUNCIÓN PARA CONSTRUIR URL CORRECTA
+  // ✅ FUNCIÓN CORREGIDA - USA CDN CORRECTO
   String _buildImageUrl(String portraitPath) {
+    // Extraer el ID del path (ej: "/character/2.webp" -> "2")
+    final match = RegExp(r'/character/(\d+)\.webp').firstMatch(portraitPath);
+    
+    if (match != null) {
+      final id = match.group(1);
+      final correctUrl = 'https://cdn.thesimpsonsapi.com/500/character/$id.webp';
+      print('🎯 URL CDN CORRECTA: $correctUrl');
+      return correctUrl;
+    }
+    
+    // Si ya es una URL completa, retornarla tal cual
     if (portraitPath.startsWith('http')) {
       return portraitPath;
     }
 
-    String url =
-        'https://thesimpsonsapi.com/api/characters/${_character!.id}/portrait.webp';
-
-    print('🎯 URL construida: $url');
+    // Fallback: usar directamente el portraitPath con CDN
+    final url = 'https://cdn.thesimpsonsapi.com/500$portraitPath';
+    print('🎯 URL CDN (fallback): $url');
     return url;
   }
 

@@ -14,23 +14,32 @@ class _SimpsonsViewState extends State<SimpsonsView> {
   Future<Map<String, dynamic>>? _future;
 
   Future<Map<String, dynamic>> _fetchCharacter() async {
-    final uri = Uri.parse('https://thesimpsonsapi.com/api/characters');
+    final randomId = Random().nextInt(50) + 1;
+    final uri = Uri.parse('https://thesimpsonsapi.com/api/characters/$randomId');
+    
+    print('🌐 Consultando: $uri');
+    
     final resp = await http.get(uri).timeout(const Duration(seconds: 30));
+    
     if (resp.statusCode != 200) {
       throw 'Error HTTP ${resp.statusCode}: No se pudieron obtener los datos';
     }
+    
     final data = jsonDecode(resp.body);
-    if (data is Map<String, dynamic> && data['results'] is List) {
-      final results = data['results'] as List;
-      if (results.isNotEmpty) {
-        final randomIdx = Random().nextInt(results.length);
-        final randomChar = results[randomIdx];
-        if (randomChar is Map<String, dynamic>) {
-          return randomChar;
-        }
-      }
+    
+    if (data is List && data.isNotEmpty) {
+      return data[0] as Map<String, dynamic>;
     }
+    
     throw 'No se pudo obtener un personaje válido de la API';
+  }
+
+  // ✅ FUNCIÓN PARA CONSTRUIR URL CORRECTA DEL CDN
+  String _buildImageUrl(String portraitPath, int characterId) {
+    // Las imágenes están en el CDN: https://cdn.thesimpsonsapi.com/500/character/{id}.webp
+    final correctUrl = 'https://cdn.thesimpsonsapi.com/500/character/$characterId.webp';
+    print('🎯 URL CDN CORRECTA: $correctUrl');
+    return correctUrl;
   }
 
   @override
@@ -154,16 +163,19 @@ class _SimpsonsViewState extends State<SimpsonsView> {
 
                   if (snapshot.hasData) {
                     final c = snapshot.data!;
+                    
                     final name = (c['name'] ?? 'Desconocido').toString();
-                    final description = (c['description'] ?? c['about'] ?? '')
-                        .toString();
-                    String imageUrl = '';
-                    final portraitPath = (c['portrait_path'] ?? '').toString();
-                    if (portraitPath.isNotEmpty) {
-                      imageUrl = 'https://thesimpsonsapi.com$portraitPath';
-                    } else if (c['image'] != null) {
-                      imageUrl = (c['image'] ?? '').toString();
-                    }
+                    final age = (c['age'] ?? 'Desconocida').toString();
+                    final occupation = (c['occupation'] ?? 'Desconocida').toString();
+                    final gender = (c['gender'] ?? 'Desconocido').toString();
+                    final portraitPath = (c['portrait'] ?? '').toString();
+                    final characterId = c['id'] as int;
+                    
+                    print('=== PERSONAJE ENCONTRADO ===');
+                    print('ID: $characterId');
+                    print('Nombre: $name');
+                    print('Portrait Path (API): $portraitPath');
+                    print('==========================');
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -202,15 +214,52 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(height: 8),
-                                if (description.isNotEmpty)
-                                  Text(
-                                    description,
-                                    style: const TextStyle(
-                                      color: Colors.black54,
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        const Text(
+                                          '👤 Edad:',
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(age),
+                                      ],
                                     ),
+                                    Column(
+                                      children: [
+                                        const Text(
+                                          '⚧ Género:',
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(gender),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  '💼 Ocupación:',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold,
                                   ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  occupation,
+                                  style: const TextStyle(color: Colors.black54),
+                                  textAlign: TextAlign.center,
+                                ),
                               ],
                             ),
                           ),
@@ -228,9 +277,9 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                           elevation: 4,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: imageUrl.isNotEmpty
+                            child: portraitPath.isNotEmpty
                                 ? Image.network(
-                                    imageUrl,
+                                    _buildImageUrl(portraitPath, characterId),
                                     height: 320,
                                     fit: BoxFit.cover,
                                     loadingBuilder: (context, child, prog) {
@@ -239,34 +288,32 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                         height: 320,
                                         color: Colors.grey[200],
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                    Colors.amber[700]!,
-                                                  ),
+                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                Colors.amber[700]!,
+                                              ),
                                             ),
                                             const SizedBox(height: 12),
                                             const Text(
                                               'Cargando imagen...',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
+                                              style: TextStyle(color: Colors.grey),
                                             ),
                                           ],
                                         ),
                                       );
                                     },
                                     errorBuilder: (context, error, stackTrace) {
+                                      print('❌ Error: $error');
+                                      print('❌ URL que falló: ${_buildImageUrl(portraitPath, characterId)}');
+                                      
                                       return Container(
                                         height: 320,
                                         color: Colors.grey[300],
                                         alignment: Alignment.center,
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: const [
                                             Icon(
                                               Icons.broken_image,
@@ -291,8 +338,7 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                     color: Colors.grey[200],
                                     alignment: Alignment.center,
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: const [
                                         Icon(
                                           Icons.person_outline,
