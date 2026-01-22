@@ -21,7 +21,7 @@ void main() {
 
     test('Validate province based on the first two digits', () {
       // arrange
-      final dniServices = DniServices('0412345678'); // 04 = Carchi
+      final dniServices = DniServices('10012345678'); // 04 Carchi
       // act
       final province = dniServices.getProvince();
       // assert
