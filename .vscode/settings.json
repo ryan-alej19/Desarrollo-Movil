@@ -1,0 +1,15 @@
+{
+    "git.ignoredRepositories": [
+        "/Users/imac16",
+        "/Users/imac16/.git"
+    ],
+    "git.autoRepositoryDetection": "subFolders",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    }
+}
