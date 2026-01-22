@@ -37,6 +37,7 @@ class DniServices {
   };
 
   String getProvince() {
+    if (dni.length < 2) return 'Desconocida';
     final provinceCode = dni.substring(0, 2);
     return _provinces[provinceCode] ?? 'Desconocida';
   }
