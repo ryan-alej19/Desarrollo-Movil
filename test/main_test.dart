@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:test_demo/services/dni_services.dart';
 
 void main() {
-  group('validations of input <DNI>', () {
+  group('validations of DniService <DNI>', () {
     test('Validate the input has 10 characters', () {
       //arrange
       final dniServices = DniServices('1234567890');
