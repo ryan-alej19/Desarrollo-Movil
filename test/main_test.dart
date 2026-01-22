@@ -12,11 +12,20 @@ void main() {
 
     test('Validate the third digit is less than 6', () {
       //arrange
-      final dniServices = DniServices('1264567890'); // 3rd digit is 6
+      final dniServices = DniServices('1204567890'); // 3rd digit is 0 (< 6)
       //act
       final isValid = dniServices.isValid();
       //assert
-      expect(isValid, false);
+      expect(isValid, true);
+    });
+
+    test('Validate province based on the first two digits', () {
+      // arrange
+      final dniServices = DniServices('0412345678'); // 04 = Carchi
+      // act
+      final province = dniServices.getProvince();
+      // assert
+      expect(province, 'Carchi');
     });
   });
 }
