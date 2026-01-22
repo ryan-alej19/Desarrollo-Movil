@@ -19,7 +19,7 @@ void main() {
       expect(province, 'Carchi');
     });
 
-    test('Validate correct verification digit (Modulo 10)', () {
+    test('Validate correct verification digit ', () {
       // arrange
       // Valid DNI from example: 0903686962 (Check digit is 2)
       // We change the last digit to 3 to make it invalid
