@@ -1,9 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-
-class DniServices {
-  String dni;
-  DniServices(this.dni);
-}
+import 'package:test_demo/services/dni_services.dart';
 
 void main() {
   group('validations of input <DNI>', () {
@@ -12,6 +8,15 @@ void main() {
       final dniServices = DniServices('1234567890');
       //act
       //assert
+    });
+
+    test('Validate the third digit is less than 6', () {
+      //arrange
+      final dniServices = DniServices('1264567890'); // 3rd digit is 6
+      //act
+      final isValid = dniServices.isValid();
+      //assert
+      expect(isValid, false);
     });
   });
 }

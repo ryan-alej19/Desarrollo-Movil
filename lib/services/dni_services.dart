@@ -1,11 +1,9 @@
 class DniServices {
-  String dni = "";
+  String dni;
+  DniServices(this.dni);
 
-  void dniLength() => dni.length;
-
-  String getDni() => dni;
-
-  void setDni(String val) {
-    dni = val;
+  bool isValid() {
+    // TODO: Implement validation
+    return true;
   }
 }
