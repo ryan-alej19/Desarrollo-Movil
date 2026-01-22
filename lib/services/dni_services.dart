@@ -3,9 +3,30 @@ class DniServices {
   DniServices(this.dni);
 
   bool isValid() {
-    if (dni.length < 3) return false;
+    if (dni.length != 10) return false;
+
+    // 3rd digit validation
     final int thirdDigit = int.parse(dni[2]);
-    return thirdDigit < 6;
+    if (thirdDigit >= 6) return false;
+
+    // Modulo 10 validation
+    final List<int> coefficients = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+    int sum = 0;
+
+    for (int i = 0; i < 9; i++) {
+      int digit = int.parse(dni[i]);
+      int product = digit * coefficients[i];
+      if (product >= 10) {
+        product -= 9;
+      }
+      sum += product;
+    }
+
+    final int mod = sum % 10;
+    final int checkDigit = mod == 0 ? 0 : 10 - mod;
+    final int lastDigit = int.parse(dni[9]);
+
+    return checkDigit == lastDigit;
   }
 
   static const Map<String, String> _provinces = {
