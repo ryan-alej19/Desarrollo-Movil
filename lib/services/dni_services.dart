@@ -10,6 +10,10 @@ class DniServices {
     if (thirdDigit >= 6) return false;
 
     // Modulo 10 validation
+    return _validateModulo10();
+  }
+
+  bool _validateModulo10() {
     final List<int> coefficients = [2, 1, 2, 1, 2, 1, 2, 1, 2];
     int sum = 0;
 
