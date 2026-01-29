@@ -4,10 +4,11 @@ class NetworkImageWithFallback extends StatefulWidget {
   final List<String> urls;
   final double? height;
 
-  const NetworkImageWithFallback({Key? key, required this.urls, this.height}) : super(key: key);
+  const NetworkImageWithFallback({super.key, required this.urls, this.height});
 
   @override
-  State<NetworkImageWithFallback> createState() => _NetworkImageWithFallbackState();
+  State<NetworkImageWithFallback> createState() =>
+      _NetworkImageWithFallbackState();
 }
 
 class _NetworkImageWithFallbackState extends State<NetworkImageWithFallback> {
@@ -38,7 +39,10 @@ class _NetworkImageWithFallbackState extends State<NetworkImageWithFallback> {
             children: const [
               CircularProgressIndicator(),
               SizedBox(height: 12),
-              Text('Cargando retrato del personaje...', style: TextStyle(color: Colors.grey)),
+              Text(
+                'Cargando retrato del personaje...',
+                style: TextStyle(color: Colors.grey),
+              ),
             ],
           ),
         );
@@ -55,7 +59,13 @@ class _NetworkImageWithFallbackState extends State<NetworkImageWithFallback> {
             children: const [
               Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
               SizedBox(height: 10),
-              Text('Retrato del personaje no disponible', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+              Text(
+                'Retrato del personaje no disponible',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         );

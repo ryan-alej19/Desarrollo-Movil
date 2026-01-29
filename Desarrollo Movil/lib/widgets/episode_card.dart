@@ -48,7 +48,7 @@ class EpisodeCard extends StatelessWidget {
               );
             },
             errorBuilder: (context, error, stackTrace) {
-              print('❌ Error cargando imagen episodio: $error');
+              debugPrint('❌ Error cargando imagen episodio: $error');
               return Container(
                 width: 60,
                 height: 60,
@@ -66,7 +66,7 @@ class EpisodeCard extends StatelessWidget {
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () {
           // Acción al tocar el episodio
-          print('📺 Episodio seleccionado: $name');
+          debugPrint('📺 Episodio seleccionado: $name');
         },
       ),
     );

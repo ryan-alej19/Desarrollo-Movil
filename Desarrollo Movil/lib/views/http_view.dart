@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:switch_theme/models/character_model.dart';
 
 class HttpView extends StatefulWidget {
-  const HttpView({Key? key}) : super(key: key);
+  const HttpView({super.key});
 
   @override
   State<HttpView> createState() => _HttpViewState();
@@ -79,11 +79,11 @@ class _HttpViewState extends State<HttpView> {
         final jsonData = jsonDecode(response.body);
         final character = CharacterModel.fromJson(jsonData);
 
-        print('=== PERSONAJE ENCONTRADO ===');
-        print('ID: ${character.id}');
-        print('Nombre: ${character.name}');
-        print('Portrait Path (API): ${character.portraitPath}');
-        print('==========================');
+        debugPrint('=== PERSONAJE ENCONTRADO ===');
+        debugPrint('ID: ${character.id}');
+        debugPrint('Nombre: ${character.name}');
+        debugPrint('Portrait Path (API): ${character.portraitPath}');
+        debugPrint('==========================');
 
         setState(() {
           _character = character;
@@ -117,14 +117,15 @@ class _HttpViewState extends State<HttpView> {
   String _buildImageUrl(String portraitPath) {
     // Extraer el ID del path (ej: "/character/2.webp" -> "2")
     final match = RegExp(r'/character/(\d+)\.webp').firstMatch(portraitPath);
-    
+
     if (match != null) {
       final id = match.group(1);
-      final correctUrl = 'https://cdn.thesimpsonsapi.com/500/character/$id.webp';
-      print('🎯 URL CDN CORRECTA: $correctUrl');
+      final correctUrl =
+          'https://cdn.thesimpsonsapi.com/500/character/$id.webp';
+      debugPrint('🎯 URL CDN CORRECTA: $correctUrl');
       return correctUrl;
     }
-    
+
     // Si ya es una URL completa, retornarla tal cual
     if (portraitPath.startsWith('http')) {
       return portraitPath;
@@ -132,7 +133,7 @@ class _HttpViewState extends State<HttpView> {
 
     // Fallback: usar directamente el portraitPath con CDN
     final url = 'https://cdn.thesimpsonsapi.com/500$portraitPath';
-    print('🎯 URL CDN (fallback): $url');
+    debugPrint('🎯 URL CDN (fallback): $url');
     return url;
   }
 
@@ -163,7 +164,7 @@ class _HttpViewState extends State<HttpView> {
                     border: Border.all(color: Colors.amber[700]!, width: 5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withValues(alpha: 0.15),
                         blurRadius: 12,
                         offset: const Offset(0, 6),
                       ),
@@ -190,7 +191,7 @@ class _HttpViewState extends State<HttpView> {
                               );
                             },
                             errorBuilder: (context, error, stackTrace) {
-                              print('❌ Error cargando imagen: $error');
+                              debugPrint('❌ Error cargando imagen: $error');
                               return Container(
                                 color: Colors.grey[200],
                                 child: const Icon(

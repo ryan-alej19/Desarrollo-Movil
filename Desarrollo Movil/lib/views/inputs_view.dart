@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 
 class InputsView extends StatefulWidget {
@@ -32,9 +33,7 @@ class _InputsViewState extends State<InputsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registro de Ropa'),
-      ),
+      appBar: AppBar(title: const Text('Registro de Ropa')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -63,8 +62,10 @@ class _InputsViewState extends State<InputsView> {
             const SizedBox(height: 20),
 
             // CATEGORÍA
-            const Text('Categoría',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Categoría',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             DropdownButton<String>(
               value: _categoria,
@@ -84,8 +85,10 @@ class _InputsViewState extends State<InputsView> {
             const SizedBox(height: 20),
 
             // TALLA
-            const Text('Talla',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Talla',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             Column(
               children: [
                 RadioListTile<String>(
@@ -131,9 +134,7 @@ class _InputsViewState extends State<InputsView> {
                 RadioListTile<String>(
                   title: const Text('XL'),
                   value: 'XL',
-                  // ignore: deprecated_member_use
                   groupValue: _talla,
-                  // ignore: deprecated_member_use
                   onChanged: (value) {
                     setState(() {
                       _talla = value!;
@@ -145,8 +146,10 @@ class _InputsViewState extends State<InputsView> {
             const SizedBox(height: 20),
 
             // COLORES
-            const Text('Colores',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Colores',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             CheckboxListTile(
               title: const Text('Rojo'),
               value: _colorRojo,
@@ -186,8 +189,10 @@ class _InputsViewState extends State<InputsView> {
             const SizedBox(height: 20),
 
             // PRECIO
-            const Text('Precio (USD)',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Precio (USD)',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             Slider(
               value: _precio,
               min: 10.0,
@@ -207,9 +212,10 @@ class _InputsViewState extends State<InputsView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('¿Producto en Stock?',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  '¿Producto en Stock?',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 Switch(
                   value: _enStock,
                   onChanged: (value) {
@@ -227,10 +233,15 @@ class _InputsViewState extends State<InputsView> {
               child: ElevatedButton(
                 onPressed: _guardarFormulario,
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 15,
+                  ),
                 ),
-                child: const Text('GUARDAR PRODUCTO',
-                    style: TextStyle(fontSize: 16)),
+                child: const Text(
+                  'GUARDAR PRODUCTO',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             ),
           ],
@@ -259,9 +270,10 @@ class _InputsViewState extends State<InputsView> {
             Text('Categoría: $_categoria'),
             Text('Talla: $_talla'),
             Text(
-                'Colores: ${coloresSeleccionados.isEmpty ? "Ninguno" : coloresSeleccionados.join(", ")}'),
+              'Colores: ${coloresSeleccionados.isEmpty ? "Ninguno" : coloresSeleccionados.join(", ")}',
+            ),
             Text('Precio: \$${_precio.round()}'),
-            Text('En Stock: ${_enStock ? "Sí ✅" : "No ❌"}'), //  
+            Text('En Stock: ${_enStock ? "Sí ✅" : "No ❌"}'), //
           ],
         ),
         actions: [

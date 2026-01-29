@@ -187,8 +187,6 @@ bool validarConAlgoritmoPropio(String aux) {
   if (aux.length != 10) return false;
 
   // Convertimos a enteros paso a paso
-  int n1 = int.parse(aux.substring(0, 1));
-  int n2 = int.parse(aux.substring(1, 2));
 
   // Región (1-24)
   int region = int.parse(aux.substring(0, 2));

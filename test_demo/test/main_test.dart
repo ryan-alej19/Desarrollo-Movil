@@ -8,6 +8,7 @@ void main() {
       final dniServices = DniServices('1234567890');
       //act
       //assert
+      expect(dniServices.dni.length, 10);
     });
 
     test('Validate province based on the first two digits', () {

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EpisodiosListView extends StatefulWidget {
-  const EpisodiosListView({Key? key}) : super(key: key);
+  const EpisodiosListView({super.key});
 
   @override
   State<EpisodiosListView> createState() => _EpisodiosListViewState();
@@ -49,13 +49,13 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
             jsonData['pages'] is int) {
           final episodes = List<Map<String, dynamic>>.from(jsonData['results']);
 
-          print('=== PÁGINA $page DE EPISODIOS ===');
-          print('Total episodios cargados: ${episodes.length}');
+          debugPrint('=== PÁGINA $page DE EPISODIOS ===');
+          debugPrint('Total episodios cargados: ${episodes.length}');
           for (var ep in episodes) {
-            print('- S${ep['season']}E${ep['episode_number']}: ${ep['name']}');
-            print('  Image Path: ${ep['image_path']}');
+            debugPrint('- S${ep['season']}E${ep['episode_number']}: ${ep['name']}');
+            debugPrint('  Image Path: ${ep['image_path']}');
           }
-          print('==========================');
+          debugPrint('==========================');
 
           setState(() {
             _episodes = episodes;
@@ -70,7 +70,7 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
         throw Exception('Error ${response.statusCode}');
       }
     } catch (e) {
-      print('❌ Error en _fetchEpisodes: $e');
+      debugPrint('❌ Error en _fetchEpisodes: $e');
       setState(() {
         _errorMessage = '❌ Error al cargar episodios: $e';
         _episodes = [];
@@ -90,7 +90,7 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
 
     // ✅ Usar el CDN correcto con tamaño 500
     String url = 'https://cdn.thesimpsonsapi.com/500$imagePath';
-    print('🎯 URL Episodio CDN: $url');
+    debugPrint('🎯 URL Episodio CDN: $url');
     return url;
   }
 
@@ -208,7 +208,7 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              'S${seasonNum}E${episodeNum}',
+                              'S${seasonNum}E$episodeNum',
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -290,7 +290,7 @@ class _EpisodiosListViewState extends State<EpisodiosListView> {
                                   );
                                 },
                                 errorBuilder: (context, error, stackTrace) {
-                                  print(
+                                  debugPrint(
                                     '❌ Error cargando imagen episodio: $error',
                                   );
                                   return Container(

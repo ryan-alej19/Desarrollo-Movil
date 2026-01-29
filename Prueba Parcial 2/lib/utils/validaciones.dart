@@ -53,8 +53,9 @@ class ValidacionesPropias {
 
   // 3. Validar Password (Hardening: Mayúscula, Número, Caracter Especial, Min 8)
   static String? validarContrasenaSegura(String? password) {
-    if (password == null || password.isEmpty)
+    if (password == null || password.isEmpty) {
       return "La contraseña es requerida";
+    }
     if (password.length < 8) return "Mínimo 8 caracteres";
 
     bool tieneMayuscula = password.contains(RegExp(r'[A-Z]'));

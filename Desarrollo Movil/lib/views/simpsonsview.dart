@@ -17,7 +17,7 @@ class _SimpsonsViewState extends State<SimpsonsView> {
     final randomId = Random().nextInt(50) + 1;
     final uri = Uri.parse('https://thesimpsonsapi.com/api/characters/$randomId');
     
-    print('🌐 Consultando: $uri');
+    debugPrint('🌐 Consultando: $uri');
     
     final resp = await http.get(uri).timeout(const Duration(seconds: 30));
     
@@ -38,7 +38,7 @@ class _SimpsonsViewState extends State<SimpsonsView> {
   String _buildImageUrl(String portraitPath, int characterId) {
     // Las imágenes están en el CDN: https://cdn.thesimpsonsapi.com/500/character/{id}.webp
     final correctUrl = 'https://cdn.thesimpsonsapi.com/500/character/$characterId.webp';
-    print('🎯 URL CDN CORRECTA: $correctUrl');
+    debugPrint('🎯 URL CDN CORRECTA: $correctUrl');
     return correctUrl;
   }
 
@@ -171,11 +171,11 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                     final portraitPath = (c['portrait'] ?? '').toString();
                     final characterId = c['id'] as int;
                     
-                    print('=== PERSONAJE ENCONTRADO ===');
-                    print('ID: $characterId');
-                    print('Nombre: $name');
-                    print('Portrait Path (API): $portraitPath');
-                    print('==========================');
+                    debugPrint('=== PERSONAJE ENCONTRADO ===');
+                    debugPrint('ID: $characterId');
+                    debugPrint('Nombre: $name');
+                    debugPrint('Portrait Path (API): $portraitPath');
+                    debugPrint('==========================');
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -305,8 +305,8 @@ class _SimpsonsViewState extends State<SimpsonsView> {
                                       );
                                     },
                                     errorBuilder: (context, error, stackTrace) {
-                                      print('❌ Error: $error');
-                                      print('❌ URL que falló: ${_buildImageUrl(portraitPath, characterId)}');
+                                      debugPrint('❌ Error: $error');
+                                      debugPrint('❌ URL que falló: ${_buildImageUrl(portraitPath, characterId)}');
                                       
                                       return Container(
                                         height: 320,
