@@ -45,5 +45,21 @@ void main() {
       // assert
       expect(labelFinder, findsOneWidget);
     });
+
+    testWidgets('Validation of Numeric Input', (WidgetTester tester) async {
+      // arrange
+      await tester.pumpWidget(const MyApp());
+
+      // act
+      final textFieldFinder = find.byKey(const Key('campo_cedula'));
+      final buttonFinder = find.byKey(const Key('boton_enviar'));
+
+      await tester.enterText(textFieldFinder, 'abcd');
+      await tester.tap(buttonFinder);
+      await tester.pump(); // Rebuild widget
+
+      // assert
+      expect(find.text('Ingrese solo numeros'), findsOneWidget);
+    });
   });
 }
