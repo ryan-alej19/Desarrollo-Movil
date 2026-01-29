@@ -34,5 +34,16 @@ void main() {
       expect(textFieldFinder, findsOneWidget);
       expect(buttonFinder, findsOneWidget);
     });
+
+    testWidgets('Validation of Label', (WidgetTester tester) async {
+      // arrange
+      await tester.pumpWidget(const MyApp());
+
+      // act
+      final labelFinder = find.text('Ingrese Cedula');
+
+      // assert
+      expect(labelFinder, findsOneWidget);
+    });
   });
 }
