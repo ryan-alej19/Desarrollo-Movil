@@ -61,5 +61,21 @@ void main() {
       // assert
       expect(find.text('Ingrese solo numeros'), findsOneWidget);
     });
+
+    testWidgets('Allows to enter only numbers', (WidgetTester tester) async {
+      // arrange
+      await tester.pumpWidget(const MyApp());
+
+      // act
+      final textFieldFinder = find.byKey(const Key('campo_cedula'));
+      final buttonFinder = find.byKey(const Key('boton_enviar'));
+
+      await tester.enterText(textFieldFinder, '1234567890');
+      await tester.tap(buttonFinder);
+      await tester.pump(); // Rebuild widget
+
+      // assert
+      expect(find.text('Cedula valida'), findsOneWidget);
+    });
   });
 }
