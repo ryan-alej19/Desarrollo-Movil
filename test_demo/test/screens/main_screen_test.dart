@@ -77,5 +77,23 @@ void main() {
       // assert
       expect(find.text('Cedula valida'), findsOneWidget);
     });
+
+    testWidgets('Validation of Length (less than 10 digits)', (
+      WidgetTester tester,
+    ) async {
+      // arrange
+      await tester.pumpWidget(const MyApp());
+
+      // act
+      final textFieldFinder = find.byKey(const Key('campo_cedula'));
+      final buttonFinder = find.byKey(const Key('boton_enviar'));
+
+      await tester.enterText(textFieldFinder, '12345'); // Less than 10
+      await tester.tap(buttonFinder);
+      await tester.pump(); // Rebuild widget
+
+      // assert
+      expect(find.text('La cedula debe tener 10 digitos'), findsOneWidget);
+    });
   });
 }
