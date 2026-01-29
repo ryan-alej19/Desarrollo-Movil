@@ -35,6 +35,11 @@ class _MyFormPageState extends State<MyFormPage> {
       return 'Ingrese solo numeros';
     }
 
+    // No permitir negativos
+    if (int.parse(valor) < 0) {
+      return 'No se permiten numeros negativos';
+    }
+
     // Si no tiene 10 digitos
     if (valor.length != 10) {
       return 'La cedula debe tener 10 digitos';

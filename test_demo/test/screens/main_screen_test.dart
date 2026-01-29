@@ -95,5 +95,21 @@ void main() {
       // assert
       expect(find.text('La cedula debe tener 10 digitos'), findsOneWidget);
     });
+
+    testWidgets('Validation of Negative Numbers', (WidgetTester tester) async {
+      // arrange
+      await tester.pumpWidget(const MyApp());
+
+      // act
+      final textFieldFinder = find.byKey(const Key('campo_cedula'));
+      final buttonFinder = find.byKey(const Key('boton_enviar'));
+
+      await tester.enterText(textFieldFinder, '-123456789');
+      await tester.tap(buttonFinder);
+      await tester.pump();
+
+      // assert
+      expect(find.text('No se permiten numeros negativos'), findsOneWidget);
+    });
   });
 }
