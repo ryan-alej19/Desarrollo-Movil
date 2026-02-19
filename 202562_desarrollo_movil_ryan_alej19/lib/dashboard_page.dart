@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            // Regresar al login (salir)
+            // Regresar al login 
             Navigator.pop(context);
           },
           child: const Text('Salir'),

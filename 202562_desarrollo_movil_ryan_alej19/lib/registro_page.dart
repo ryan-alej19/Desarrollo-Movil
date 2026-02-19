@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dashboard_page.dart';
 
 class RegistroPage extends StatefulWidget {
-  const RegistroPage({super.key});
+  final Function toggleTheme; // Recibimos la funcion para cambiar tema
+
+  const RegistroPage({super.key, required this.toggleTheme});
 
   @override
   State<RegistroPage> createState() => _RegistroPageState();
@@ -103,8 +106,15 @@ class _RegistroPageState extends State<RegistroPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Registro bien echo')),
                       );
-                      // Volver al login
-                      Navigator.pop(context);
+                      // Ir directamente al Dashboard y limpiar la pila de navegación
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DashboardPage(toggleTheme: widget.toggleTheme),
+                        ), //lleve a la otra ruta 
+                        (route) => false,
+                      );
                     }
                   },
                   child: const Text('Registrar'),
