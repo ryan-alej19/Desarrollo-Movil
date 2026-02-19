@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class DashboardPage extends StatefulWidget {
   final Function toggleTheme;
@@ -29,8 +30,14 @@ class _DashboardPageState extends State<DashboardPage> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            // Regresar al login 
-            Navigator.pop(context);
+            // Regresar al login
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    LoginPage(toggleTheme: widget.toggleTheme),
+              ),
+            );
           },
           child: const Text('Salir'),
         ),

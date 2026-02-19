@@ -112,7 +112,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         MaterialPageRoute(
                           builder: (context) =>
                               DashboardPage(toggleTheme: widget.toggleTheme),
-                        ), //lleve a la otra ruta 
+                        ), //lleve a la otra ruta
                         (route) => false,
                       );
                     }
